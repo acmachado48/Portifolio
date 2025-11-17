@@ -5,10 +5,11 @@ export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [language, setLanguage] = useState('pt');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // Novo estado para erro
+  const [error, setError] = useState(null);
 
+  // SEU LINK NOVO DO RENDER AQUI EMBAIXO 👇
   const API_URL = import.meta.env.PROD
-    ? 'https://api-portfolio.onrender.com/api/projects'
+    ? 'https://api-portfolio-pm8z.onrender.com/api/projects'
     : 'http://localhost:3001/api/projects';
 
   useEffect(() => {
@@ -18,11 +19,10 @@ export default function Projects() {
         return res.json();
       })
       .then((data) => {
-        // Proteção: Se o servidor não devolver uma lista (array), lança erro
         if (!Array.isArray(data)) {
-          throw new Error('Formato de dados inválido recebido do servidor');
+          throw new Error('Formato de dados inválido');
         }
-
+        // Parse dos campos JSON (mesma lógica de antes)
         const parsedData = data.map((project) => ({
           ...project,
           technologies:
@@ -42,13 +42,11 @@ export default function Projects() {
         setError(null);
       })
       .catch((err) => {
-        console.error('Erro detalhado:', err);
-        setError(
-          'Não foi possível carregar os projetos. Verifique se o servidor está rodando.'
-        );
+        console.error(err);
+        setError('Não foi possível carregar os projetos.');
       })
       .finally(() => {
-        setLoading(false); // Garante que o loading some, mesmo com erro
+        setLoading(false);
       });
   }, []);
 
