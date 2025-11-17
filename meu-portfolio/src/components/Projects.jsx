@@ -7,8 +7,12 @@ export default function Projects() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // Novo estado para erro
 
+  const API_URL = import.meta.env.PROD
+    ? 'https://api-portfolio.onrender.com/api/projects'
+    : 'http://localhost:3001/api/projects';
+
   useEffect(() => {
-    fetch('http://localhost:3001/api/projects')
+    fetch(API_URL)
       .then(async (res) => {
         if (!res.ok) throw new Error('Erro na resposta do servidor');
         return res.json();
